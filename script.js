@@ -49,6 +49,7 @@ Object.entries(kanaRows).forEach(([category, rows]) => {
     item.category = category;
     item.rowLabel = row.label;
     item.id = `${category}-${rowIndex}-${slotIndex}`;
+    item.audio = `assets/audio/kana/${[...item.kata].map(character => character.codePointAt(0).toString(16)).join('-')}.wav`;
     allKana.push(item);
   }));
 });
@@ -114,7 +115,7 @@ function selectKana(item, speak = false) {
   clearWriting();
   updateStudyProgress();
   renderStudyGrid();
-  if (speak) playKana(item[studyScript], document.querySelector('#play-sound'));
+  if (speak) playKana(item, document.querySelector('#play-sound'));
 }
 
 function updateStudyProgress() {
@@ -150,25 +151,46 @@ document.querySelectorAll('[data-study-script]').forEach((button) => {
   });
 });
 
-function playKana(text, button) {
-  if (!('speechSynthesis' in window)) {
-    showToast('当前浏览器暂不支持语音播放');
-    return;
-  }
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'ja-JP';
-  utterance.rate = .72;
-  utterance.pitch = 1;
-  const japaneseVoice = window.speechSynthesis.getVoices().find(voice => voice.lang.toLowerCase().startsWith('ja'));
-  if (japaneseVoice) utterance.voice = japaneseVoice;
-  if (button) button.classList.add('speaking');
-  utterance.onend = () => button?.classList.remove('speaking');
-  utterance.onerror = () => button?.classList.remove('speaking');
-  window.speechSynthesis.speak(utterance);
+let activeKanaPlayback = null;
+
+function stopKanaPlayback() {
+  if (!activeKanaPlayback) return;
+  activeKanaPlayback.audio.pause();
+  activeKanaPlayback.button?.classList.remove('speaking');
+  activeKanaPlayback = null;
 }
 
-document.querySelector('#play-sound').addEventListener('click', () => playKana(selectedKana[studyScript], document.querySelector('#play-sound')));
+function playKana(item, button) {
+  if (typeof Audio === 'undefined') {
+    showToast('当前浏览器暂不支持音频播放');
+    return;
+  }
+
+  stopKanaPlayback();
+  const playback = { audio: new Audio(item.audio), button };
+  let errorReported = false;
+  activeKanaPlayback = playback;
+  playback.audio.preload = 'auto';
+  button?.classList.add('speaking');
+
+  const clearPlayback = () => {
+    button?.classList.remove('speaking');
+    if (activeKanaPlayback === playback) activeKanaPlayback = null;
+  };
+  const reportError = () => {
+    if (errorReported) return;
+    errorReported = true;
+    clearPlayback();
+    showToast('音频加载失败，请检查网络后重试');
+  };
+
+  playback.audio.addEventListener('ended', clearPlayback, { once: true });
+  playback.audio.addEventListener('error', reportError, { once: true });
+  const playRequest = playback.audio.play();
+  playRequest?.catch(reportError);
+}
+
+document.querySelector('#play-sound').addEventListener('click', () => playKana(selectedKana, document.querySelector('#play-sound')));
 
 const canvas = document.querySelector('#writing-canvas');
 const context = canvas.getContext('2d');
@@ -336,7 +358,7 @@ function finishAnswer(correct) {
   document.querySelector('#question-prompt').textContent = `正确读音 · ${quizState.current.item.romaji}`;
   document.querySelector('#next-question').classList.add('visible');
   updateScore();
-  if (correct) playKana(quizState.current.symbol, document.querySelector('#quiz-audio'));
+  if (correct) playKana(quizState.current.item, document.querySelector('#quiz-audio'));
 }
 
 function updateScore() {
@@ -377,7 +399,7 @@ document.querySelectorAll('[data-quiz-mode]').forEach((button) => {
   });
 });
 
-document.querySelector('#quiz-audio').addEventListener('click', () => playKana(quizState.current.symbol, document.querySelector('#quiz-audio')));
+document.querySelector('#quiz-audio').addEventListener('click', () => playKana(quizState.current.item, document.querySelector('#quiz-audio')));
 document.querySelector('#next-question').addEventListener('click', nextQuestion);
 document.querySelector('#reset-score').addEventListener('click', () => {
   Object.assign(quizState, { attempts: 0, correct: 0, streak: 0, best: 0 });

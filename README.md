@@ -6,7 +6,7 @@
 
 - 完整五十音学习：清音 46、浊音/半浊音 25、拗音 33
 - 平假名与片假名切换、罗马音、浏览进度记录
-- 使用浏览器日语语音朗读单个假名
+- 使用 VOICEVOX Nemo 女声1朗读单个假名
 - 支持鼠标、触控笔和触屏的描红书写画布
 - 随机练习：文字范围与练习范围自由组合
 - 选择题、输入题、键盘答题、正确率与连胜统计
@@ -15,23 +15,34 @@
 
 ## 本地打开
 
-直接用浏览器打开 `index.html` 即可。也可以在本目录启动任意静态文件服务器。
+建议在本目录启动任意静态文件服务器后访问网站，以确保浏览器允许加载音频资源。
 
-> 发音使用浏览器的 Web Speech API。实际声音取决于设备是否安装日语语音；推荐使用最新版 Chrome、Edge 或 Safari。
+> 假名发音由 VOICEVOX Nemo 女声1（Style ID 10005）预先生成，因此不同设备上的声音保持一致。
+
+## 音频与署名
+
+本项目的假名音频使用 [VOICEVOX Nemo](https://voicevox.hiroshiba.jp/nemo/) 女声1生成，使用时须遵守其[利用规约](https://voicevox.hiroshiba.jp/nemo/term/)，并保留网站页脚中的“音声：VOICEVOX Nemo”署名。
+
+如需重新生成音频，请先在 `http://127.0.0.1:50121` 启动 VOICEVOX Nemo Engine，再执行：
+
+```bash
+node scripts/generate-voicevox-audio.mjs
+```
 
 ## 部署到 GitHub Pages
 
-1. 将本目录内容提交到 GitHub 仓库。
-2. 打开仓库的 **Settings → Pages**。
-3. 在 **Build and deployment** 中选择 **Deploy from a branch**。
-4. 选择 `main` 分支和 `/ (root)` 目录并保存。
+1. 将修改推送到 GitHub 仓库的 `main` 分支。
+2. `.github/workflows/deploy-pages.yml` 会收集页面与 `assets/` 音频资源。
+3. GitHub Actions 完成后，GitHub Pages 会自动更新。
 
-网站不需要 Node.js，也不需要 GitHub Actions 构建。部署地址确定后，可以把 `index.html` 中的 `og:image` 更新为 `og.png` 的完整线上地址。
+网站没有前端构建依赖；GitHub Actions 仅负责打包并发布静态文件。部署地址确定后，可以把 `index.html` 中的 `og:image` 更新为 `og.png` 的完整线上地址。
 
 ## 文件说明
 
 - `index.html`：页面结构与全部文案
 - `styles.css`：视觉样式与响应式布局
-- `script.js`：假名数据、发音、书写与随机练习逻辑
+- `script.js`：假名数据、音频播放、书写与随机练习逻辑
+- `assets/audio/kana/`：VOICEVOX Nemo 生成的假名音频
+- `scripts/generate-voicevox-audio.mjs`：音频资源生成脚本
 - `og.png`：社交分享封面
 - `Reference/`：原始五十音随机练习参考项目
