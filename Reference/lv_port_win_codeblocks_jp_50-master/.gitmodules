@@ -1,0 +1,4 @@
+[submodule "lvgl"]
+	path = lvgl
+	url = https://gitee.com/zhouyuebiao/lvgl.git
+	branch = release/v9.2
