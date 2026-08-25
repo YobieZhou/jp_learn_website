@@ -191,6 +191,22 @@
   </main>
 
   <nav class="mobile-dock" aria-label="移动端导航"><a href="#learn"><b>あ</b><span>五十音</span></a><a href="#practice"><b>練</b><span>练习</span></a><a href="#reading"><b>読</b><span>课文</span></a><a href="#shadowing"><b>声</b><span>跟读</span></a></nav>
+  <div class="floating-tools" id="floating-tools">
+    <div class="floating-nav-wrap">
+      <nav class="floating-nav" id="floating-nav" aria-label="快捷导航" aria-hidden="true">
+        <a href="#learn"><small>01</small><span>五十音</span></a>
+        <a href="#practice"><small>02</small><span>随机练习</span></a>
+        <a href="#reading"><small>03</small><span>课文跟读</span></a>
+        <a href="#shadowing"><small>04</small><span>影子跟读</span></a>
+      </nav>
+      <button class="floating-tool-button nav-summon" id="nav-summon" type="button" aria-label="打开快捷导航" aria-controls="floating-nav" aria-expanded="false">
+        <span class="tool-glyph" aria-hidden="true">目</span><small>导航</small>
+      </button>
+    </div>
+    <button class="floating-tool-button back-to-top" id="back-to-top" type="button" aria-label="返回页面顶部">
+      <span class="tool-glyph" aria-hidden="true">↑</span><small>顶部</small>
+    </button>
+  </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

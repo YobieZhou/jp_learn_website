@@ -336,6 +336,7 @@ function finishAnswer(correct) {
   document.querySelector('#question-prompt').textContent = `正确读音 · ${quizState.current.item.romaji}`;
   document.querySelector('#next-question').classList.add('visible');
   updateScore();
+  if (correct) playKana(quizState.current.symbol, document.querySelector('#quiz-audio'));
 }
 
 function updateScore() {
@@ -404,8 +405,45 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
+const floatingTools = document.querySelector('#floating-tools');
+const floatingNavWrap = document.querySelector('.floating-nav-wrap');
+const floatingNav = document.querySelector('#floating-nav');
+const navSummon = document.querySelector('#nav-summon');
+const backToTop = document.querySelector('#back-to-top');
+
+function setFloatingNavOpen(open, restoreFocus = false) {
+  floatingNavWrap.classList.toggle('is-open', open);
+  navSummon.setAttribute('aria-expanded', String(open));
+  navSummon.setAttribute('aria-label', open ? '关闭快捷导航' : '打开快捷导航');
+  floatingNav.setAttribute('aria-hidden', String(!open));
+  floatingNav.inert = !open;
+  if (restoreFocus) navSummon.focus();
+}
+
+function updateFloatingTools() {
+  const navReady = window.scrollY > 140 || (window.innerWidth > 680 && window.innerWidth <= 900);
+  floatingTools.classList.toggle('nav-ready', navReady);
+  floatingTools.classList.toggle('top-ready', window.scrollY > 520);
+  if (!navReady) setFloatingNavOpen(false);
+}
+
+navSummon.addEventListener('click', () => setFloatingNavOpen(!floatingNavWrap.classList.contains('is-open')));
+backToTop.addEventListener('click', () => {
+  setFloatingNavOpen(false);
+  window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+});
+floatingNav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setFloatingNavOpen(false)));
+document.addEventListener('click', (event) => {
+  if (!floatingNavWrap.contains(event.target)) setFloatingNavOpen(false);
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && floatingNavWrap.classList.contains('is-open')) setFloatingNavOpen(false, true);
+});
+window.addEventListener('scroll', updateFloatingTools, { passive: true });
+window.addEventListener('resize', updateFloatingTools);
+
 const observedSections = [...document.querySelectorAll('#learn, #practice, #reading, #shadowing')];
-const navLinks = [...document.querySelectorAll('.topnav a')];
+const navLinks = [...document.querySelectorAll('.topnav a, .floating-nav a, .mobile-dock a')];
 if ('IntersectionObserver' in window) {
   const sectionObserver = new IntersectionObserver((entries) => {
     entries.filter(entry => entry.isIntersecting).forEach((entry) => {
@@ -420,3 +458,4 @@ selectKana(selectedKana);
 updateScore();
 nextQuestion();
 requestAnimationFrame(sizeCanvas);
+updateFloatingTools();
