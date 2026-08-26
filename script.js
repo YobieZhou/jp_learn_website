@@ -49,7 +49,7 @@ Object.entries(kanaRows).forEach(([category, rows]) => {
     item.category = category;
     item.rowLabel = row.label;
     item.id = `${category}-${rowIndex}-${slotIndex}`;
-    item.audio = `assets/audio/kana/${[...item.kata].map(character => character.codePointAt(0).toString(16)).join('-')}.wav`;
+    item.audio = `assets/audio/kana/${[...item.kata].map(character => character.codePointAt(0).toString(16)).join('-')}.wav?voice=nemo-f6`;
     allKana.push(item);
   }));
 });
