@@ -6,7 +6,7 @@ const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 const sourcePath = path.join(projectRoot, 'script.js');
 const outputDirectory = path.join(projectRoot, 'assets', 'audio', 'kana');
 const engineUrl = (process.env.VOICEVOX_ENGINE_URL || 'http://127.0.0.1:50121').replace(/\/$/, '');
-const styleId = Number(process.env.VOICEVOX_STYLE_ID || 10005);
+const styleId = Number(process.env.VOICEVOX_STYLE_ID || 10006);
 
 const source = await readFile(sourcePath, 'utf8');
 const entries = [...source.matchAll(/kana\('([^']+)',\s*'([^']+)'/g)]
