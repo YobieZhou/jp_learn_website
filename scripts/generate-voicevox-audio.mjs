@@ -1,12 +1,13 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { applyKanaLearningProfile } from './kana-audio-profile.mjs';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const sourcePath = path.join(projectRoot, 'script.js');
 const outputDirectory = path.join(projectRoot, 'assets', 'audio', 'kana');
 const engineUrl = (process.env.VOICEVOX_ENGINE_URL || 'http://127.0.0.1:50121').replace(/\/$/, '');
-const styleId = Number(process.env.VOICEVOX_STYLE_ID || 10006);
+const styleId = Number(process.env.VOICEVOX_STYLE_ID || 10005);
 
 const source = await readFile(sourcePath, 'utf8');
 const entries = [...source.matchAll(/kana\('([^']+)',\s*'([^']+)'/g)]
@@ -18,6 +19,7 @@ if (entries.length !== 104) {
 }
 
 await mkdir(outputDirectory, { recursive: true });
+let adjustedCount = 0;
 
 function audioFileName(kata) {
   return `${[...kata].map(character => character.codePointAt(0).toString(16)).join('-')}.wav`;
@@ -32,16 +34,7 @@ async function requestJson(url, options) {
 for (const [index, entry] of entries.entries()) {
   const parameters = new URLSearchParams({ text: entry.kata, speaker: String(styleId) });
   const query = await requestJson(`${engineUrl}/audio_query?${parameters}`, { method: 'POST' });
-  Object.assign(query, {
-    speedScale: 0.88,
-    pitchScale: 0,
-    intonationScale: 1,
-    volumeScale: 1,
-    prePhonemeLength: 0.08,
-    postPhonemeLength: 0.1,
-    outputSamplingRate: 24000,
-    outputStereo: false
-  });
+  if (applyKanaLearningProfile(query, entry.kata).adjusted) adjustedCount += 1;
 
   const response = await fetch(`${engineUrl}/synthesis?speaker=${styleId}`, {
     method: 'POST',
@@ -59,4 +52,4 @@ for (const [index, entry] of entries.entries()) {
   process.stdout.write(`\rGenerated ${String(index + 1).padStart(3, ' ')}/${entries.length}: ${entry.hira} ${entry.kata}`);
 }
 
-process.stdout.write(`\nSaved ${entries.length} VOICEVOX Nemo files to ${outputDirectory}\n`);
+process.stdout.write(`\nSaved ${entries.length} VOICEVOX Nemo files to ${outputDirectory} (${adjustedCount} clarity-adjusted)\n`);
