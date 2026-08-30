@@ -70,9 +70,15 @@ const visitedKana = new Set(safeStorage.get('kotoba-visited', []));
 
 const kanaGrid = document.querySelector('#kana-grid');
 const vowelHead = document.querySelector('#vowel-head');
+const strokeOrderStage = document.querySelector('#stroke-order-stage');
+const strokeOrderMeta = document.querySelector('#stroke-order-meta');
+const replayStrokes = document.querySelector('#replay-strokes');
+const strokeSvgCache = new Map();
+let strokeRenderToken = 0;
 
 function renderStudyGrid() {
   const isYoon = studyCategory === 'yoon';
+  const showingBoth = studyScript === 'both';
   kanaGrid.className = `kana-grid${isYoon ? ' yoon-grid' : ''}`;
   vowelHead.className = `vowel-head${isYoon ? ' three-columns' : ''}`;
   vowelHead.innerHTML = `<span></span>${(isYoon ? ['ya', 'yu', 'yo'] : ['a', 'i', 'u', 'e', 'o']).map(v => `<b>${v}</b>`).join('')}`;
@@ -93,28 +99,183 @@ function renderStudyGrid() {
       }
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = ['kana-cell', item.id === selectedKana.id ? 'selected' : '', visitedKana.has(item.id) ? 'visited' : ''].filter(Boolean).join(' ');
-      button.setAttribute('aria-label', `${item[studyScript]}，罗马音 ${item.romaji}`);
-      button.innerHTML = `<span>${item[studyScript]}</span><small>${item.romaji}</small>`;
+      button.className = ['kana-cell', showingBoth ? 'paired' : '', item.id === selectedKana.id ? 'selected' : '', visitedKana.has(item.id) ? 'visited' : ''].filter(Boolean).join(' ');
+      button.setAttribute('aria-label', showingBoth
+        ? `平假名 ${item.hira}，片假名 ${item.kata}，罗马音 ${item.romaji}`
+        : `${item[studyScript]}，罗马音 ${item.romaji}`);
+
+      const symbol = document.createElement('span');
+      symbol.className = showingBoth ? 'kana-pair' : 'kana-symbol';
+      if (showingBoth) {
+        const hira = document.createElement('b');
+        const kata = document.createElement('b');
+        hira.textContent = item.hira;
+        kata.textContent = item.kata;
+        symbol.append(hira, kata);
+      } else {
+        symbol.textContent = item[studyScript];
+      }
+      const romaji = document.createElement('small');
+      romaji.textContent = item.romaji;
+      button.append(symbol, romaji);
       button.addEventListener('click', () => selectKana(item, true));
       kanaGrid.append(button);
     });
   });
 }
 
+function strokeAssetUrl(character) {
+  const codePoint = character.codePointAt(0).toString(16).padStart(5, '0');
+  return `assets/strokes/kana/${codePoint}.svg?source=kanjivg-61e39cfc`;
+}
+
+function fetchStrokeSvgSource(character) {
+  if (!strokeSvgCache.has(character)) {
+    const request = fetch(strokeAssetUrl(character)).then((response) => {
+      if (!response.ok) throw new Error(`Stroke asset for ${character} returned ${response.status}.`);
+      return response.text();
+    });
+    request.catch(() => {
+      if (strokeSvgCache.get(character) === request) strokeSvgCache.delete(character);
+    });
+    strokeSvgCache.set(character, request);
+  }
+  return strokeSvgCache.get(character);
+}
+
+async function createStrokeGlyph(character) {
+  const source = await fetchStrokeSvgSource(character);
+  const documentFragment = new DOMParser().parseFromString(source, 'image/svg+xml');
+  if (documentFragment.querySelector('parsererror')) throw new Error(`Stroke asset for ${character} is invalid SVG.`);
+
+  const svg = document.importNode(documentFragment.documentElement, true);
+  svg.removeAttribute('width');
+  svg.removeAttribute('height');
+  svg.classList.add('stroke-order-svg');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', `${character} 的笔画顺序`);
+
+  const strokeLayer = [...svg.querySelectorAll('g')].find(group => group.id.startsWith('kvg:StrokePaths_'));
+  const paths = strokeLayer ? [...strokeLayer.querySelectorAll('path')] : [];
+  if (paths.length === 0) throw new Error(`Stroke asset for ${character} contains no paths.`);
+
+  paths.forEach((path) => {
+    const guide = path.cloneNode(false);
+    guide.removeAttribute('id');
+    guide.classList.add('stroke-guide-path');
+    path.classList.add('stroke-path');
+    path.parentNode.insertBefore(guide, path);
+  });
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'stroke-glyph';
+  wrapper.append(svg);
+  return { element: wrapper, strokeCount: paths.length };
+}
+
+async function createStrokeScriptGroup(item, script) {
+  const glyphs = await Promise.all([...item[script]].map(createStrokeGlyph));
+  const group = document.createElement('div');
+  group.className = 'stroke-script-group';
+  group.dataset.script = script;
+
+  const label = document.createElement('span');
+  label.className = 'stroke-script-label';
+  label.textContent = `${script === 'hira' ? '平假名' : '片假名'} · ${item[script]}`;
+
+  const glyphRow = document.createElement('div');
+  glyphRow.className = 'stroke-glyph-row';
+  glyphRow.append(...glyphs.map(glyph => glyph.element));
+  group.append(label, glyphRow);
+
+  return {
+    element: group,
+    script,
+    strokeCount: glyphs.reduce((sum, glyph) => sum + glyph.strokeCount, 0)
+  };
+}
+
+function animateStrokePaths() {
+  const paths = [...strokeOrderStage.querySelectorAll('.stroke-path')];
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  paths.forEach((path, index) => {
+    let length = 500;
+    try { length = Math.max(1, path.getTotalLength()); } catch { /* Keep a safe SVG fallback length. */ }
+    path.style.strokeDasharray = String(length);
+    path.style.strokeDashoffset = reducedMotion ? '0' : String(length);
+    if (!reducedMotion) path.style.animation = `draw-stroke .52s ease-out ${index * .58}s forwards`;
+  });
+}
+
+async function renderStrokeOrder(item) {
+  const token = ++strokeRenderToken;
+  const scripts = studyScript === 'both' ? ['hira', 'kata'] : [studyScript];
+  const loading = document.createElement('span');
+  loading.className = 'stroke-loading';
+  loading.textContent = '笔顺载入中';
+  strokeOrderStage.className = 'stroke-order-stage';
+  strokeOrderStage.replaceChildren(loading);
+  strokeOrderStage.setAttribute('aria-busy', 'true');
+  strokeOrderMeta.textContent = '正在加载笔顺…';
+  replayStrokes.disabled = true;
+
+  try {
+    const groups = await Promise.all(scripts.map(script => createStrokeScriptGroup(item, script)));
+    if (token !== strokeRenderToken) return;
+    strokeOrderStage.classList.toggle('showing-both', scripts.length === 2);
+    strokeOrderStage.replaceChildren(...groups.map(group => group.element));
+    strokeOrderMeta.textContent = groups
+      .map(group => `${group.script === 'hira' ? '平假名' : '片假名'} ${group.strokeCount} 画`)
+      .join(' · ');
+    requestAnimationFrame(animateStrokePaths);
+  } catch (error) {
+    if (token !== strokeRenderToken) return;
+    const failure = document.createElement('span');
+    failure.className = 'stroke-loading is-error';
+    failure.textContent = '笔顺暂时无法加载';
+    strokeOrderStage.replaceChildren(failure);
+    strokeOrderMeta.textContent = '请点击重播再次尝试';
+    console.error(error);
+  } finally {
+    if (token === strokeRenderToken) {
+      strokeOrderStage.setAttribute('aria-busy', 'false');
+      replayStrokes.disabled = false;
+    }
+  }
+}
+
 function selectKana(item, speak = false) {
   selectedKana = item;
   visitedKana.add(item.id);
   safeStorage.set('kotoba-visited', [...visitedKana]);
-  document.querySelector('#detail-kana').textContent = item[studyScript];
-  document.querySelector('#guide-kana').textContent = item[studyScript];
+  const showingBoth = studyScript === 'both';
+  const writingScript = studyScript === 'kata' ? 'kata' : 'hira';
+  const detailKana = document.querySelector('#detail-kana');
+  detailKana.classList.toggle('paired', showingBoth);
+  if (showingBoth) {
+    const hira = document.createElement('span');
+    const kata = document.createElement('span');
+    hira.textContent = item.hira;
+    kata.textContent = item.kata;
+    detailKana.replaceChildren(hira, kata);
+  } else {
+    detailKana.textContent = item[studyScript];
+  }
+  document.querySelector('#guide-kana').textContent = item[writingScript];
   document.querySelector('#detail-romaji').textContent = item.romaji;
-  const otherScript = studyScript === 'hira' ? 'kata' : 'hira';
-  document.querySelector('#detail-companion').textContent = `${item[otherScript]} · ${otherScript === 'hira' ? '平假名' : '片假名'}`;
+  if (showingBoth) {
+    document.querySelector('#detail-companion').textContent = '平假名 · 片假名对照';
+    document.querySelector('#writing-script-note').textContent = '对照模式下描写平假名';
+  } else {
+    const otherScript = studyScript === 'hira' ? 'kata' : 'hira';
+    document.querySelector('#detail-companion').textContent = `${item[otherScript]} · ${otherScript === 'hira' ? '平假名' : '片假名'}`;
+    document.querySelector('#writing-script-note').textContent = '沿淡色字形描写';
+  }
   document.querySelector('#selected-category').textContent = categoryMeta[item.category].short;
   clearWriting();
   updateStudyProgress();
   renderStudyGrid();
+  renderStrokeOrder(item);
   if (speak) playKana(item, document.querySelector('#play-sound'));
 }
 
@@ -150,6 +311,8 @@ document.querySelectorAll('[data-study-script]').forEach((button) => {
     selectKana(selectedKana);
   });
 });
+
+replayStrokes.addEventListener('click', () => renderStrokeOrder(selectedKana));
 
 let activeKanaPlayback = null;
 

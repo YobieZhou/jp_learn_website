@@ -5,8 +5,9 @@
 ## 已完成功能
 
 - 完整五十音学习：清音 46、浊音/半浊音 25、拗音 33
-- 平假名与片假名切换、罗马音、浏览进度记录
+- 平假名、片假名与平片对照显示，支持罗马音和浏览进度记录
 - 使用 VOICEVOX Nemo 女声1朗读单个假名
+- 使用 KanjiVG 逐笔动画展示平假名与片假名笔顺
 - 支持鼠标、触控笔和触屏的描红书写画布
 - 随机练习：文字范围与练习范围自由组合
 - 选择题、输入题、键盘答题、正确率与连胜统计
@@ -19,7 +20,7 @@
 
 > 假名发音由 VOICEVOX Nemo 女声1（Style ID 10005）预先生成，因此不同设备上的声音保持一致。
 
-## 音频与署名
+## 音频、笔顺与署名
 
 本项目的假名音频使用 [VOICEVOX Nemo](https://voicevox.hiroshiba.jp/nemo/) 女声1生成，使用时须遵守其[利用规约](https://voicevox.hiroshiba.jp/nemo/term/)，并保留网站页脚中的“音声：VOICEVOX Nemo”署名。
 
@@ -36,6 +37,12 @@ node scripts/check-kana-profile.mjs
 node scripts/check-kana-audio.mjs
 ```
 
+假名笔顺 SVG 来自 [KanjiVG](https://kanjivg.tagaini.net/) 固定版本 `61e39cfc29724132a6f8823b166296932985a0ff`，按 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) 使用。原始文件及许可文本保存在 `assets/strokes/kana/`，网站页脚保留 KanjiVG 署名。可运行以下命令确认全部学习假名都有对应笔顺资源：
+
+```bash
+node scripts/check-kana-strokes.mjs
+```
+
 ## 部署到 GitHub Pages
 
 1. 将修改推送到 GitHub 仓库的 `main` 分支。
@@ -50,6 +57,9 @@ node scripts/check-kana-audio.mjs
 - `styles.css`：视觉样式与响应式布局
 - `script.js`：假名数据、音频播放、书写与随机练习逻辑
 - `assets/audio/kana/`：VOICEVOX Nemo 生成的假名音频
+- `assets/strokes/kana/`：KanjiVG 假名笔顺 SVG 与独立许可说明
 - `scripts/generate-voicevox-audio.mjs`：音频资源生成脚本
+- `scripts/import-kanjivg-kana.mjs`：从固定版本 KanjiVG 仓库导入所需假名 SVG
+- `scripts/check-kana-strokes.mjs`：笔顺资源完整性检查脚本
 - `og.png`：社交分享封面
 - `Reference/`：原始五十音随机练习参考项目

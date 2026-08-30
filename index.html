@@ -11,8 +11,8 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="og.png">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js?v=nemo-f1-clear-v3" defer></script>
+  <link rel="stylesheet" href="styles.css?v=kana-strokes-v1">
+  <script src="script.js?v=nemo-f1-clear-v3-kana-strokes-v1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -58,7 +58,7 @@
     <section class="section-block learn-section" id="learn" aria-labelledby="learn-title">
       <div class="section-intro">
         <div><p class="eyebrow">GOJŪON · 五十音</p><h2 id="learn-title">把声音、字形和手感<br>一起记住。</h2></div>
-        <p>点击任意假名，听标准日语读音，再在方格中描写。学习记录仅保存在当前设备。</p>
+        <p>点击任意假名，听标准日语读音，观看逐笔笔顺，再在方格中描写。学习记录仅保存在当前设备。</p>
       </div>
 
       <div class="learn-workspace">
@@ -77,6 +77,7 @@
             <div class="script-switch" role="group" aria-label="假名类型">
               <button class="active" data-study-script="hira" aria-pressed="true">ひらがな</button>
               <button data-study-script="kata" aria-pressed="false">カタカナ</button>
+              <button data-study-script="both" aria-pressed="false">平・片对照</button>
             </div>
           </div>
           <div class="vowel-head" id="vowel-head" aria-hidden="true"><span></span><b>a</b><b>i</b><b>u</b><b>e</b><b>o</b></div>
@@ -88,7 +89,14 @@
           <div class="detail-kana" id="detail-kana">あ</div>
           <div class="detail-reading"><div><b id="detail-romaji">a</b><small>罗马音</small></div><span id="detail-companion">ア · 片假名</span></div>
           <button class="sound-button" id="play-sound" type="button"><span class="play-dot">▶</span><span class="sound-label">听发音</span><small>NEMO</small></button>
-          <div class="writing-head"><div><b>书写练习</b><small>沿淡色字形描写</small></div><button id="toggle-guide" type="button" aria-pressed="true">隐藏描红</button></div>
+          <div class="stroke-order-card">
+            <div class="stroke-order-head">
+              <div><b>笔顺演示</b><small id="stroke-order-meta">正在加载笔顺…</small></div>
+              <button id="replay-strokes" type="button" aria-label="重新播放当前假名笔顺">↻ 重播</button>
+            </div>
+            <div class="stroke-order-stage" id="stroke-order-stage" aria-live="polite" aria-busy="true"><span class="stroke-loading">笔顺载入中</span></div>
+          </div>
+          <div class="writing-head"><div><b>书写练习</b><small id="writing-script-note">沿淡色字形描写</small></div><button id="toggle-guide" type="button" aria-pressed="true">隐藏描红</button></div>
           <div class="writing-board" id="writing-board">
             <span class="guide-kana" id="guide-kana" aria-hidden="true">あ</span>
             <canvas id="writing-canvas" aria-label="假名书写画布"></canvas>
@@ -186,7 +194,7 @@
       <a class="brand footer-brand" href="#top"><span class="brand-mark">こ</span><span><b>言葉</b><small>KOTOBA · 日语学习</small></span></a>
       <p>小さな一歩から。<br><span>从小小的一步开始。</span></p>
       <nav aria-label="页脚导航"><a href="#learn">五十音</a><a href="#practice">随机练习</a><a href="#reading">课文跟读</a><a href="#shadowing">影子跟读</a></nav>
-      <small>© 2026 Kotoba. Built for curious learners.<br><a href="https://voicevox.hiroshiba.jp/nemo/" target="_blank" rel="noopener noreferrer">音声：VOICEVOX Nemo（女声1）</a></small>
+      <small>© 2026 Kotoba. Built for curious learners.<br><a href="https://voicevox.hiroshiba.jp/nemo/" target="_blank" rel="noopener noreferrer">音声：VOICEVOX Nemo（女声1）</a><br><a href="https://kanjivg.tagaini.net/" target="_blank" rel="noopener noreferrer">笔顺：KanjiVG（CC BY-SA 3.0）</a></small>
     </footer>
   </main>
 
