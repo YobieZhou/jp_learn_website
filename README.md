@@ -11,18 +11,21 @@
 - 支持鼠标、触控笔和触屏的描红书写画布
 - 随机练习：文字范围与练习范围自由组合
 - 选择题、输入题、键盘答题、正确率与连胜统计
-- N5—N1 课文跟读及文章影子跟读的内容占位
+- 54 篇 N3、N4、N5 日语短文影子跟读，支持等级筛选
+- 逐句点击播放、全文连续播放、语速调节、录音回放与假名开关
+- 每篇文章配有重点词汇与语法总结
+- N5—N1 课文跟读功能占位
 - 手机、平板和桌面端响应式布局
 
 ## 本地打开
 
 建议在本目录启动任意静态文件服务器后访问网站，以确保浏览器允许加载音频资源。
 
-> 假名发音由 VOICEVOX Nemo 女声1（Style ID 10005）预先生成，因此不同设备上的声音保持一致。
+> 假名发音由 VOICEVOX Nemo 女声1（Style ID 10005）预先生成；影子跟读由 VOICEVOX Nemo 男声2（Style ID 10000）预先生成，因此不同设备上的声音保持一致。
 
 ## 音频、笔顺与署名
 
-本项目的假名音频使用 [VOICEVOX Nemo](https://voicevox.hiroshiba.jp/nemo/) 女声1生成，使用时须遵守其[利用规约](https://voicevox.hiroshiba.jp/nemo/term/)，并保留网站页脚中的“音声：VOICEVOX Nemo”署名。
+本项目的假名音频使用 [VOICEVOX Nemo](https://voicevox.hiroshiba.jp/nemo/) 女声1生成，影子跟读音频使用男声2生成。使用时须遵守其[利用规约](https://voicevox.hiroshiba.jp/nemo/term/)，并保留网站页脚中的“音声：VOICEVOX Nemo”署名。
 
 如需重新生成音频，请先在 `http://127.0.0.1:50121` 启动 VOICEVOX Nemo Engine，再执行：
 
@@ -35,6 +38,19 @@ node scripts/generate-voicevox-audio.mjs
 ```bash
 node scripts/check-kana-profile.mjs
 node scripts/check-kana-audio.mjs
+```
+
+影子跟读使用独立的自然男声配置：原生语速与音高、轻微增强语调，并压缩标点和句尾停顿。重新生成全部影子跟读音频：
+
+```bash
+VOICEVOX_STYLE_ID=10000 VOICEVOX_PROFILE=natural-male VOICEVOX_FORCE=true node scripts/generate-shadowing-audio.mjs
+```
+
+生成后可运行以下检查，确认 54 篇、488 个逐句音频、假名标注、重点词汇及语法总结均完整：
+
+```bash
+node scripts/check-shadowing-voice-profile.mjs
+node scripts/check-shadowing.mjs
 ```
 
 假名笔顺 SVG 来自 [KanjiVG](https://kanjivg.tagaini.net/) 固定版本 `61e39cfc29724132a6f8823b166296932985a0ff`，按 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) 使用。原始文件及许可文本保存在 `assets/strokes/kana/`，网站页脚保留 KanjiVG 署名。可运行以下命令确认全部学习假名都有对应笔顺资源：
@@ -56,9 +72,14 @@ node scripts/check-kana-strokes.mjs
 - `index.html`：页面结构与全部文案
 - `styles.css`：视觉样式与响应式布局
 - `script.js`：假名数据、音频播放、书写与随机练习逻辑
+- `shadowing.html` / `shadowing.css` / `shadowing.js`：专注影子跟读页面
+- `shadowing-data.mjs`：文章目录与学习数据入口
+- `shadowing-transcripts.mjs` / `shadowing-readings.mjs` / `shadowing-notes.mjs`：正文、假名标注、重点词汇与语法总结
 - `assets/audio/kana/`：VOICEVOX Nemo 生成的假名音频
+- `assets/audio/shadowing/`：VOICEVOX Nemo 生成的影子跟读音频
 - `assets/strokes/kana/`：KanjiVG 假名笔顺 SVG 与独立许可说明
 - `scripts/generate-voicevox-audio.mjs`：音频资源生成脚本
+- `scripts/generate-shadowing-audio.mjs`：影子跟读音频生成脚本
 - `scripts/import-kanjivg-kana.mjs`：从固定版本 KanjiVG 仓库导入所需假名 SVG
 - `scripts/check-kana-strokes.mjs`：笔顺资源完整性检查脚本
 - `og.png`：社交分享封面

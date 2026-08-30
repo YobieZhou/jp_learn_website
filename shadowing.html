@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17343b">
+  <title>影子跟读｜言葉 Kotoba</title>
+  <meta name="description" content="阅读日语短文原文，点击任意句播放，或从头进行完整影子跟读。">
+  <link rel="stylesheet" href="shadowing.css?v=shadowing-m2-all-notes-v1">
+  <script type="module" src="shadowing.js?v=shadowing-m2-all-notes-v1"></script>
+</head>
+<body>
+  <a class="skip-link" href="#shadowing-main">跳到跟读内容</a>
+
+  <div class="focus-app">
+    <header class="focus-header">
+      <a class="brand" href="index.html#shadowing" aria-label="返回言葉日语学习首页">
+        <span class="brand-mark">こ</span>
+        <span><b>言葉</b><small>KOTOBA · 日语学习</small></span>
+      </a>
+
+      <div class="studio-name" aria-label="当前功能">
+        <span>SHADOWING STUDIO</span>
+        <b>影子跟读</b>
+      </div>
+
+      <div class="header-actions">
+        <a class="exit-focus" href="index.html#shadowing">退出专注模式 <span>↗</span></a>
+      </div>
+    </header>
+
+    <main class="focus-layout" id="shadowing-main">
+      <div class="sidebar-scrim" id="sidebar-scrim" hidden></div>
+      <aside class="lesson-sidebar" id="lesson-sidebar" aria-label="短文目录">
+        <div class="sidebar-head">
+          <div>
+            <p>LESSON LIBRARY</p>
+            <h1>54 篇短文精读</h1>
+          </div>
+          <button class="sidebar-close" id="sidebar-close" type="button" aria-label="关闭短文目录">×</button>
+        </div>
+
+        <div class="catalog-summary" aria-label="内容导入状态">
+          <span><b id="catalog-total">54</b><small>篇资料</small></span>
+          <i></i>
+          <span><b id="catalog-ready">54</b><small>篇可跟读</small></span>
+          <i></i>
+          <span><b id="catalog-source-marked">54</b><small>篇资料标注</small></span>
+        </div>
+
+        <div class="level-overview" aria-label="资料原始等级分布">
+          <span><b>N3</b><small><em id="level-count-n3">11</em> 篇</small></span>
+          <span><b>N4</b><small><em id="level-count-n4">20</em> 篇</small></span>
+          <span><b>N5</b><small><em id="level-count-n5">22</em> 篇</small></span>
+          <span class="transition"><b>N5–N4</b><small><em id="level-count-transition">1</em> 过渡篇</small></span>
+        </div>
+
+        <label class="lesson-search">
+          <span aria-hidden="true">⌕</span>
+          <span class="sr-only">搜索短文</span>
+          <input id="lesson-search" type="search" placeholder="搜索标题或主题" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+
+        <div class="level-filters" id="level-filters" role="group" aria-label="按等级筛选">
+          <button class="active" type="button" data-level="ALL" aria-pressed="true"><b>全部</b><small id="filter-count-all">54</small></button>
+          <button type="button" data-level="N3" aria-pressed="false"><b>N3</b><small id="filter-count-n3">11</small></button>
+          <button type="button" data-level="N4" aria-pressed="false"><b>N4</b><small id="filter-count-n4">21</small></button>
+          <button type="button" data-level="N5" aria-pressed="false"><b>N5</b><small id="filter-count-n5">23</small></button>
+        </div>
+
+        <nav class="lesson-list" id="lesson-list" aria-label="短文列表"></nav>
+
+        <div class="sidebar-legend">
+          <p><span class="legend-dot ready"></span> 54 篇原文与逐句音频</p>
+          <p><span class="legend-text">句</span> 点击正文中的任意句播放</p>
+          <p><span class="legend-tag source">标</span> 资料标注 <span class="legend-tag assessed">评</span> 难度评估</p>
+          <p class="transition-note">N5–N4 过渡篇同时出现在 N5、N4 筛选中</p>
+          <a href="https://voicevox.hiroshiba.jp/nemo/" target="_blank" rel="noopener noreferrer">音声：VOICEVOX Nemo（男声2）</a>
+        </div>
+      </aside>
+
+      <section class="practice-stage" aria-labelledby="lesson-title">
+        <div class="stage-scroll" id="stage-scroll">
+          <div class="mobile-stage-bar">
+            <button id="sidebar-open" type="button" aria-controls="lesson-sidebar" aria-expanded="false"><span aria-hidden="true">目</span> 选择短文</button>
+            <span id="mobile-lesson-label">LESSON 01</span>
+          </div>
+
+          <header class="lesson-hero">
+            <div class="lesson-heading">
+              <div class="lesson-meta-line">
+                <span class="level-badge" id="lesson-level">N3</span>
+                <span class="level-origin source" id="lesson-level-origin">资料标注</span>
+                <span id="lesson-number">LESSON 01</span>
+                <i></i>
+                <span id="lesson-topic">敬语表达</span>
+              </div>
+              <h2 id="lesson-title">大切な取引先</h2>
+              <p id="lesson-title-zh">接待重要客户</p>
+            </div>
+            <div class="lesson-actions">
+              <button class="primary-action" id="start-session" type="button"><span aria-hidden="true">▶</span> 从头完整播放</button>
+            </div>
+          </header>
+
+          <section class="session-toolbar" aria-label="跟读显示与播放设置">
+            <div class="display-modes" id="display-modes" role="group" aria-label="文本显示方式">
+              <button class="active" type="button" data-mode="study" aria-pressed="true">阅读</button>
+              <button type="button" data-mode="shadow" aria-pressed="false">跟读</button>
+              <button type="button" data-mode="blind" aria-pressed="false">盲听</button>
+            </div>
+            <button class="furigana-toggle" id="furigana-toggle" type="button" aria-pressed="false"><span aria-hidden="true">あ</span><b>显示假名</b></button>
+            <label class="compact-select">语速
+              <select id="speed-select" aria-label="播放速度">
+                <option value="0.75">0.75×</option>
+                <option value="0.9">0.90×</option>
+                <option value="1" selected>1.00×</option>
+                <option value="1.15">1.15×</option>
+                <option value="1.25">1.25×</option>
+              </select>
+            </label>
+            <label class="compact-select">句间
+              <select id="gap-select" aria-label="句间停顿">
+                <option value="400">短 · 0.4s</option>
+                <option value="800" selected>中 · 0.8s</option>
+                <option value="1400">长 · 1.4s</option>
+              </select>
+            </label>
+            <button class="loop-button" id="loop-button" type="button" data-mode="off" aria-label="循环已关闭"><span aria-hidden="true">↻</span><b>不循环</b></button>
+          </section>
+
+          <div class="lesson-content-grid">
+            <section class="transcript-panel" aria-labelledby="transcript-title">
+              <div class="panel-head">
+                <div><p>JAPANESE ORIGINAL</p><h3 id="transcript-title">原文跟读</h3></div>
+                <div class="sentence-progress" aria-label="本课完成进度"><b id="completed-count">0</b><span>/</span><em id="sentence-total">8</em><small>句</small></div>
+              </div>
+
+              <div class="transcript-instruction" id="transcript-instruction">
+                <span aria-hidden="true">耳</span>
+                <p><b>点击原文中的任意一句即可播放。</b><small>“从头完整播放”会从第一句连续播放；空格暂停，← → 切换句子。</small></p>
+              </div>
+
+              <div class="transcript" id="transcript"></div>
+            </section>
+
+            <aside class="study-notes" aria-label="重点词汇与语法">
+              <div class="notes-tabs" id="notes-tabs" role="tablist" aria-label="精读笔记">
+                <button class="active" id="vocabulary-tab" type="button" role="tab" aria-selected="true" aria-controls="vocabulary-panel" data-notes="vocabulary">重点词汇</button>
+                <button id="grammar-tab" type="button" role="tab" aria-selected="false" aria-controls="grammar-panel" data-notes="grammar">语法总结</button>
+              </div>
+              <div class="notes-panel" id="vocabulary-panel" role="tabpanel" aria-labelledby="vocabulary-tab"></div>
+              <div class="notes-panel" id="grammar-panel" role="tabpanel" aria-labelledby="grammar-tab" hidden></div>
+            </aside>
+          </div>
+        </div>
+
+        <section class="player-dock" aria-label="跟读播放器">
+          <div class="player-progress-wrap">
+            <input id="audio-progress" type="range" min="0" max="1000" value="0" aria-label="音频播放进度">
+          </div>
+          <div class="now-playing">
+            <span class="playing-index" id="playing-index">01</span>
+            <div><small>NOW SHADOWING</small><b id="now-playing-text">本日、当社にて山田様にお越しいただきました。</b></div>
+          </div>
+          <div class="transport-controls">
+            <button id="previous-sentence" type="button" aria-label="上一句">←</button>
+            <button id="replay-sentence" type="button" aria-label="从头重播当前句">↶</button>
+            <button class="main-play" id="main-play" type="button" aria-label="播放当前句"><span>▶</span></button>
+            <button id="next-sentence" type="button" aria-label="下一句">↷</button>
+            <button id="skip-next" type="button" aria-label="下一句">→</button>
+          </div>
+          <div class="record-controls">
+            <button class="record-button" id="record-button" type="button"><i aria-hidden="true"></i><span>录下跟读</span></button>
+            <button class="record-play" id="record-play" type="button" disabled><span aria-hidden="true">▷</span> 回放</button>
+            <small>录音仅保存在本次浏览器会话</small>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="countdown" id="countdown" hidden aria-live="assertive"><span>准备</span><b>3</b></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <audio id="shadowing-audio" preload="metadata"></audio>
+</body>
+</html>

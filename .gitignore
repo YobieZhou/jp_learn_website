@@ -26,7 +26,11 @@ coverage/
 outputs/
 work/
 
+# Local voice-comparison previews
+assets/audio/shadowing-preview/
+
 # Logs and temporary files
+tmp/
 *.log
 *.tmp
 *.temp
