@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17343b">
+  <title>N5 课文跟读｜言葉 Kotoba</title>
+  <meta name="description" content="《大家的日语 第二版 初级1》1至25课教材原声、完整文稿与逐句点击跟读。">
+  <link rel="stylesheet" href="reading.css?v=minna-v2-audio-v1">
+  <script type="module" src="reading.js?v=minna-v2-audio-v1"></script>
+</head>
+<body>
+  <a class="skip-link" href="#reading-main">跳到课文内容</a>
+
+  <div class="focus-app reading-app">
+    <header class="focus-header">
+      <a class="brand" href="index.html#reading" aria-label="返回言葉日语学习首页">
+        <span class="brand-mark">こ</span>
+        <span><b>言葉</b><small>KOTOBA · 日语学习</small></span>
+      </a>
+
+      <div class="studio-name" aria-label="当前功能">
+        <span>N5 READING STUDIO</span>
+        <b>课文跟读</b>
+      </div>
+
+      <div class="header-actions">
+        <a class="exit-focus" href="index.html#reading">退出专注模式 <span>↗</span></a>
+      </div>
+    </header>
+
+    <main class="focus-layout" id="reading-main">
+      <div class="sidebar-scrim" id="sidebar-scrim" hidden></div>
+      <aside class="lesson-sidebar" id="lesson-sidebar" aria-label="N5课文目录">
+        <div class="sidebar-head">
+          <div>
+            <p>TEXTBOOK PATH</p>
+            <h1>N5 · 初级Ⅰ</h1>
+          </div>
+          <button class="sidebar-close" id="sidebar-close" type="button" aria-label="关闭课文目录">×</button>
+        </div>
+
+        <div class="catalog-summary" aria-label="N5内容状态">
+          <span><b id="catalog-total">25</b><small>课课文</small></span>
+          <i></i>
+          <span><b id="catalog-tracks">87</b><small>轨原声</small></span>
+          <i></i>
+          <span><b id="catalog-sentences">—</b><small>段可点击</small></span>
+        </div>
+
+        <div class="source-note">
+          <b>第二版 · 教材原声</b>
+          <p>《大家的日语 第二版 初级1》配套光盘完整转写。课文均为网页文本，不使用 PDF 截图。</p>
+          <details class="disc-intro">
+            <summary>光盘说明 · MP3 00</summary>
+            <div id="disc-intro-lines" aria-label="光盘说明逐句播放"></div>
+          </details>
+        </div>
+
+        <label class="lesson-search">
+          <span aria-hidden="true">⌕</span>
+          <span class="sr-only">搜索N5课文</span>
+          <input id="lesson-search" type="search" placeholder="搜索课题、主题或文型" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+
+        <div class="level-filters unit-filters" id="unit-filters" role="group" aria-label="按单元筛选">
+          <button class="active" type="button" data-unit="ALL" aria-pressed="true"><b>全部</b><small>25</small></button>
+          <button type="button" data-unit="1" aria-pressed="false"><b>01–05</b><small>基础</small></button>
+          <button type="button" data-unit="2" aria-pressed="false"><b>06–10</b><small>生活</small></button>
+          <button type="button" data-unit="3" aria-pressed="false"><b>11–15</b><small>扩展</small></button>
+          <button type="button" data-unit="4" aria-pressed="false"><b>16–20</b><small>变形</small></button>
+          <button type="button" data-unit="5" aria-pressed="false"><b>21–25</b><small>表达</small></button>
+        </div>
+
+        <nav class="lesson-list" id="lesson-list" aria-label="N5课文列表"></nav>
+
+        <div class="sidebar-legend">
+          <p><span class="legend-dot ready"></span> 25 课 · 87 轨教材原声</p>
+          <p><span class="legend-text">句</span> 点击任意文本句定位播放</p>
+          <p><span class="legend-tag source">文</span> 文型进度 <span class="legend-tag assessed">词</span> 重点词汇</p>
+          <p>音声：第二版配套光盘原始录音</p>
+        </div>
+      </aside>
+
+      <section class="practice-stage furigana-visible" id="reading-stage" aria-labelledby="lesson-title" data-display="study">
+        <div class="stage-scroll" id="stage-scroll">
+          <div class="mobile-stage-bar">
+            <button id="sidebar-open" type="button" aria-controls="lesson-sidebar" aria-expanded="false"><span aria-hidden="true">目</span> 选择课文</button>
+            <span id="mobile-lesson-label">LESSON 01</span>
+          </div>
+
+          <header class="lesson-hero reading-hero">
+            <div class="lesson-heading">
+              <div class="lesson-meta-line">
+                <span class="level-badge" id="lesson-level">N5</span>
+                <span class="level-origin source">第二版教材原声</span>
+                <span id="lesson-number">LESSON 01</span>
+                <i></i>
+                <span id="lesson-topic">名词句・自我介绍</span>
+              </div>
+              <h2 id="lesson-title">はじめまして</h2>
+              <p id="lesson-title-zh">初次见面</p>
+              <small class="lesson-goal" id="lesson-goal">用基础名词句完成简单自我介绍。</small>
+            </div>
+            <div class="lesson-actions">
+              <button class="primary-action" id="start-session" type="button"><span aria-hidden="true">▶</span> 从头完整播放</button>
+            </div>
+          </header>
+
+          <section class="session-toolbar" aria-label="课文显示与播放设置">
+            <div class="display-modes" id="display-modes" role="group" aria-label="课文练习方式">
+              <button class="active" type="button" data-mode="study" aria-pressed="true">精读</button>
+              <button type="button" data-mode="shadow" aria-pressed="false">跟读</button>
+              <button type="button" data-mode="blind" aria-pressed="false">盲听</button>
+            </div>
+            <button class="furigana-toggle active" id="furigana-toggle" type="button" aria-pressed="true"><span aria-hidden="true">あ</span><b>隐藏假名</b></button>
+            <button class="furigana-toggle translation-toggle" id="translation-toggle" type="button" aria-pressed="false" hidden><span aria-hidden="true">译</span><b>显示译文</b></button>
+            <label class="compact-select">语速
+              <select id="speed-select" aria-label="播放速度">
+                <option value="0.75">0.75×</option>
+                <option value="0.9">0.90×</option>
+                <option value="1" selected>1.00×</option>
+                <option value="1.15">1.15×</option>
+                <option value="1.25">1.25×</option>
+              </select>
+            </label>
+            <label class="compact-select">句间
+              <select id="gap-select" aria-label="句间停顿">
+                <option value="400">短 · 0.4s</option>
+                <option value="800" selected>中 · 0.8s</option>
+                <option value="1400">长 · 1.4s</option>
+              </select>
+            </label>
+            <button class="loop-button" id="loop-button" type="button" data-mode="off" aria-label="循环已关闭"><span aria-hidden="true">↻</span><b>不循环</b></button>
+          </section>
+
+          <div class="lesson-content-grid">
+            <section class="transcript-panel" aria-labelledby="reading-text-title">
+              <div class="panel-head">
+                <div><p>INTERACTIVE TEXT</p><h3 id="reading-text-title">课文跟读</h3></div>
+                <div class="sentence-progress" aria-label="本课完成进度"><b id="completed-count">0</b><span>/</span><em id="sentence-total">—</em><small>段</small></div>
+              </div>
+
+              <div class="transcript-instruction" id="reading-instruction">
+                <span aria-hidden="true">読</span>
+                <p><b>点击任意一句文本即可播放对应的教材原声。</b><small>每轨按时间戳定位；可切换假名、跟读或盲听模式。</small></p>
+              </div>
+
+              <div class="reading-text" id="reading-text"></div>
+            </section>
+
+            <aside class="study-notes" aria-label="重点词汇与文型">
+              <div class="notes-tabs" id="notes-tabs" role="tablist" aria-label="课文笔记">
+                <button class="active" id="vocabulary-tab" type="button" role="tab" aria-selected="true" aria-controls="vocabulary-panel" data-notes="vocabulary">重点词汇</button>
+                <button id="grammar-tab" type="button" role="tab" aria-selected="false" aria-controls="grammar-panel" data-notes="grammar">本课文型</button>
+              </div>
+              <div class="notes-panel" id="vocabulary-panel" role="tabpanel" aria-labelledby="vocabulary-tab"></div>
+              <div class="notes-panel" id="grammar-panel" role="tabpanel" aria-labelledby="grammar-tab" hidden></div>
+            </aside>
+          </div>
+        </div>
+
+        <section class="player-dock" aria-label="课文播放器">
+          <div class="player-progress-wrap">
+            <input id="audio-progress" type="range" min="0" max="1000" value="0" aria-label="音频播放进度">
+          </div>
+          <div class="now-playing">
+            <span class="playing-index" id="playing-index">01</span>
+            <div><small>NOW READING</small><b id="now-playing-text">はじめまして。わたしはマリアです。</b></div>
+          </div>
+          <div class="transport-controls">
+            <button id="previous-sentence" type="button" aria-label="上一句">←</button>
+            <button id="replay-sentence" type="button" aria-label="重播当前句">↶</button>
+            <button class="main-play" id="main-play" type="button" aria-label="播放当前句"><span>▶</span></button>
+            <button id="next-sentence" type="button" aria-label="下一句">↷</button>
+            <button id="skip-next" type="button" aria-label="下一句">→</button>
+          </div>
+          <div class="record-controls">
+            <button class="record-button" id="record-button" type="button"><i aria-hidden="true"></i><span>录下跟读</span></button>
+            <button class="record-play" id="record-play" type="button" disabled><span aria-hidden="true">▷</span> 回放</button>
+            <small>录音仅保存在本次浏览器会话</small>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="countdown" id="countdown" hidden aria-live="assertive"><span>准备</span><b>3</b></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <audio id="reading-audio" preload="metadata"></audio>
+</body>
+</html>

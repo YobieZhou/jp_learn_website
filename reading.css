@@ -1,0 +1,79 @@
+@import url("./shadowing.css?v=shadowing-m2-all-notes-v1");
+
+:root {
+  --red: #2f8276;
+  --red-dark: #1e655d;
+  --green: #2f8276;
+  --paper: #f4f2e9;
+}
+
+.reading-app .brand-mark { background: var(--red); }
+.reading-app .exit-focus span { color: #8bd2c7; }
+.source-note { margin: 2px 0 12px; padding: 11px 12px; border: 1px solid rgba(255,255,255,.1); border-radius: 10px; background: rgba(255,255,255,.05); }
+.source-note b { color: #a7e0d6; font-size: 8px; letter-spacing: .1em; }
+.source-note p { margin: 6px 0 0; color: #9fb2b0; font-size: 7px; line-height: 1.65; }
+.disc-intro { margin-top: 9px; border-top: 1px solid rgba(255,255,255,.09); }
+.disc-intro summary { padding: 8px 0 2px; color: #d5e5e2; font-size: 7px; font-weight: 800; cursor: pointer; }
+.disc-intro > div { padding-top: 5px; display: grid; gap: 4px; }
+.disc-intro button { width: 100%; padding: 6px 7px; display: grid; grid-template-columns: 25px minmax(0,1fr) 9px; gap: 5px; align-items: center; border: 1px solid rgba(255,255,255,.08); border-radius: 7px; color: #bacbc8; background: rgba(255,255,255,.035); text-align: left; }
+.disc-intro button:hover, .disc-intro button.active { border-color: rgba(139,210,199,.34); color: #eef8f6; background: rgba(139,210,199,.1); }
+.disc-intro button span { color: #7f9995; font-size: 6px; font-variant-numeric: tabular-nums; }
+.disc-intro button b { overflow: hidden; color: inherit; font-size: 6px; font-weight: 650; letter-spacing: 0; text-overflow: ellipsis; white-space: nowrap; }
+.disc-intro button i { color: #8bd2c7; font-size: 6px; font-style: normal; }
+.unit-filters { grid-template-columns: repeat(2, 1fr); }
+.unit-filters button:first-child { grid-column: 1 / -1; }
+.unit-filters button small { font-size: 6px; }
+.lesson-goal { max-width: 680px; display: block; margin-top: 12px; color: var(--muted); font-size: 9px; line-height: 1.7; }
+.translation-toggle span { font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif; }
+.translation-toggle[hidden] { display: none !important; }
+.furigana-toggle.active { border-color: rgba(47,130,118,.32); color: var(--red-dark); background: #e8f3ef; }
+
+.reading-text { padding: 18px 0 3px; display: grid; gap: 8px; }
+.track-divider { margin: 15px 5px 1px; padding-bottom: 7px; display: flex; gap: 8px; align-items: center; border-bottom: 1px solid var(--line); }
+.track-divider:first-child { margin-top: 0; }
+.track-divider span { padding: 4px 7px; border-radius: 99px; color: #fff; background: var(--red-dark); font-size: 7px; font-weight: 900; letter-spacing: .08em; }
+.track-divider b { color: var(--ink); font-size: 9px; }
+.track-divider i { margin-left: auto; color: var(--muted); font-size: 7px; font-style: normal; }
+.reading-sentence { width: 100%; padding: 13px 14px; display: grid; grid-template-columns: 34px minmax(0, 1fr) 20px; gap: 10px; align-items: start; border: 1px solid transparent; border-radius: 11px; color: inherit; background: transparent; text-align: left; transition: border-color .16s ease, background .16s ease, transform .16s ease; }
+.reading-sentence:hover { border-color: var(--line); background: #fff; transform: translateY(-1px); }
+.reading-sentence.active { border-color: rgba(47,130,118,.32); background: #edf7f4; box-shadow: inset 3px 0 var(--red); }
+.reading-sentence.completed:not(.active) .reading-jp { text-decoration: underline; text-decoration-color: rgba(47,130,118,.25); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.speaker-label { min-width: 31px; padding-top: 3px; display: grid; color: var(--red-dark); font-size: 8px; font-weight: 900; line-height: 1.2; text-align: center; font-variant-numeric: tabular-nums; }
+.speaker-label small { color: var(--muted); font-size: 5px; letter-spacing: .08em; }
+.speaker-label em { margin-top: 3px; color: var(--muted); font-size: 5px; font-style: normal; font-weight: 650; }
+.reading-copy { min-width: 0; }
+.reading-jp { display: block; font-family: "Yu Mincho", "Noto Serif JP", serif; font-size: clamp(16px, 1.35vw, 21px); line-height: 2.15; letter-spacing: .025em; }
+.reading-jp ruby { ruby-align: center; }
+.reading-jp rt { display: none; color: var(--red-dark); font-family: "Yu Gothic", "Noto Sans JP", sans-serif; font-size: .52em; font-weight: 650; line-height: 1; }
+.practice-stage.furigana-visible .reading-jp rt { display: ruby-text; }
+.reading-translation { display: none; margin-top: 4px; color: var(--muted); font-size: 9px; line-height: 1.65; }
+.practice-stage.translation-visible .reading-translation { display: block; }
+.sentence-play-mark { padding-top: 6px; color: var(--red); font-size: 9px; opacity: .35; }
+.reading-sentence:hover .sentence-play-mark, .reading-sentence.active .sentence-play-mark { opacity: 1; }
+.reading-sentence.cue { padding-top: 8px; padding-bottom: 8px; background: rgba(23,52,59,.025); }
+.reading-sentence.cue .reading-jp { color: var(--muted); font-family: "Yu Gothic", "Noto Sans JP", sans-serif; font-size: 11px; font-weight: 700; line-height: 1.8; }
+.practice-stage[data-display="shadow"] .reading-sentence:not(.active) .reading-jp { color: #58706f; }
+.practice-stage[data-display="blind"] .reading-copy { color: transparent; filter: blur(5px); user-select: none; }
+.practice-stage[data-display="blind"] .reading-translation { visibility: hidden; }
+.practice-stage[data-display="blind"] #reading-instruction b { font-size: 0; }
+.practice-stage[data-display="blind"] #reading-instruction b::after { content: "不看文本，只跟随声音进行复述。"; font-size: 8px; }
+.lesson-item-goal { display: block; margin-top: 4px; color: #829997; font-size: 6px; line-height: 1.4; }
+
+@media (max-width: 720px) {
+  .reading-sentence { padding: 11px 8px; grid-template-columns: 29px minmax(0, 1fr) 16px; gap: 7px; }
+  .reading-jp { font-size: 17px; line-height: 2.05; }
+  .speaker-label { font-size: 6px; }
+  .session-toolbar { gap: 6px; }
+  .translation-toggle { order: 2; }
+}
+
+@media (max-width: 640px) {
+  .reading-app .lesson-heading { min-width: 0; }
+  .reading-app .lesson-heading h2 { max-width: 100%; overflow-wrap: anywhere; }
+  .reading-app .session-toolbar { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px; }
+  .reading-app .display-modes { grid-column: 1 / -1; }
+  .reading-app .furigana-toggle { width: 100%; margin: 0; justify-content: center; }
+  .reading-app .compact-select:first-of-type { min-width: 0; margin: 0; justify-content: space-between; }
+  .reading-app .compact-select select { min-width: 0; }
+  .reading-app .loop-button { width: 44px; min-width: 44px; padding: 0; }
+}
